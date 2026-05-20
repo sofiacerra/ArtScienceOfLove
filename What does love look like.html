@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What does love look like to you?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f7;
+    --surface: #f3f1ed;
+    --border: rgba(0,0,0,0.1);
+    --border-mid: rgba(0,0,0,0.18);
+    --text: #1a1916;
+    --text-mid: #5a5750;
+    --text-faint: #9e9b95;
+    --accent: #b07c6e;
+    --accent-light: #eeddd9;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .hero { max-width: 680px; margin: 0 auto; padding: 5rem 2rem 2.5rem; text-align: center; }
+  .hero-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 1.25rem; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 4.5rem); font-weight: 300; line-height: 1.05; letter-spacing: -.02em; color: var(--text); margin-bottom: .5rem; }
+  .hero-title em { font-style: italic; }
+  .hero-rule { width: 40px; height: 1px; background: var(--border-mid); margin: 1.5rem auto; }
+  .hero-sub { font-size: .9rem; color: var(--text-mid); line-height: 1.75; max-width: 440px; margin: 0 auto; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  .statement { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem 2rem; margin: 0 0 2.5rem; }
+  .kicker { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-faint); margin-bottom: .8rem; }
+  .statement-body { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; line-height: 1.9; color: var(--text); }
+  .statement-body p + p { margin-top: 1rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 2.5rem; }
+  .stat { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; text-align: center; }
+  .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; line-height: 1; color: var(--text); display: block; }
+  .stat-l { font-size: 11px; color: var(--text-faint); margin-top: .3rem; }
+
+  .section-head { display: flex; align-items: center; gap: 12px; margin: 0 0 1.1rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 400; color: var(--text); white-space: nowrap; }
+  .section-line { flex: 1; height: 0.5px; background: var(--border); }
+
+  .themes { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 2.5rem; }
+  .theme { font-size: 11.5px; padding: 5px 14px; border-radius: 20px; border: 0.5px solid var(--border-mid); color: var(--text-mid); background: transparent; }
+
+  .masonry { columns: 3; column-gap: 12px; margin: 0 0 2.5rem; }
+  @media (max-width: 600px) { .masonry { columns: 2; } }
+
+  .card { break-inside: avoid; background: #fff; border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; transition: border-color .15s, box-shadow .15s; }
+  .card:hover { border-color: var(--border-mid); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+
+  .card-img-btn { display: block; background: var(--surface); border-bottom: 0.5px solid var(--border); cursor: zoom-in; transition: background .15s; border: none; padding: 0; width: 100%; }
+  .card-img-btn:hover { background: var(--accent-light); }
+  .card-img-btn img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+
+  .card-body { padding: .85rem 1rem 1rem; }
+  .card-quote { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; line-height: 1.65; color: var(--text); }
+  .card-noquote { font-size: .78rem; color: var(--text-faint); font-style: normal; }
+  .card-num { font-size: 10px; color: var(--text-faint); margin-top: .5rem; letter-spacing: .06em; }
+
+  .reflection { border-left: 2px solid var(--accent); padding: 1.25rem 1.75rem; margin: 0 0 1rem; background: var(--accent-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .reflection-body { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; line-height: 1.9; color: var(--text); }
+  .reflection-body p + p { margin-top: 1rem; }
+
+  .footer { text-align: center; padding: 3rem 0 2rem; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
+
+  /* LIGHTBOX */
+  .lb { display: none; position: fixed; inset: 0; background: rgba(20,18,16,0.94); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+  .lb.open { display: flex; }
+  .lb-img-wrap { max-width: min(80vw, 900px); max-height: 68vh; }
+  .lb-img-wrap img { max-width: 100%; max-height: 68vh; object-fit: contain; border-radius: 6px; display: block; }
+  .lb-caption { margin-top: 1.5rem; text-align: center; max-width: min(80vw, 600px); }
+  .lb-caption p { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; line-height: 1.75; color: rgba(255,255,255,0.85); min-height: 1.5rem; }
+  .lb-num { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: .5rem; display: block; }
+  .lb-close { position: fixed; top: 1.25rem; right: 1.5rem; background: none; border: 0.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.6); border-radius: 50%; width: 36px; height: 36px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: color .15s, border-color .15s; }
+  .lb-close:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+  .lb-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: none; border: 0.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.6); border-radius: 50%; width: 42px; height: 42px; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color .15s, border-color .15s; }
+  .lb-arrow:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+  .lb-prev { left: 1.25rem; }
+  .lb-next { right: 1.25rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-label">A project on love &nbsp;·&nbsp; Honours Course: The Art &amp; Science of Loving</p>
+  <h1 class="hero-title">What does <em>love</em><br>look like to you?</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">A Google Form sent to friends and family. The only requirement was an image. What came back was a window into how the people I love see the world.</p>
+</div>
+
+<div class="content">
+
+  <div class="statement">
+    <p class="kicker">The project</p>
+    <div class="statement-body">
+      <p>I created a form inviting my close circle to share what love means to them through a photo and, optionally, a few words. Uploading an image was the only mandatory element since I was more interested in the visual language of love than in written definitions.</p>
+      <p>The project expanded organically when some friends chose to share it with their own network, showing how an act of love can ripple outward. So, even though I expected my target group to be my close social circle, it didn't stay only there.</p>
+      <p>It deepened my existing relationships: asking people to reflect on love opened conversations that went beyond the surface, making me experience genuine moments of connection and vulnerability. And it revealed something collective: many people instinctively chose images of home and physical spaces, pointing to a shared understanding of love as rooted in place and togetherness.</p>
+      <p>As it turns out, love doesn't need much of an invitation. It just needs a space to be expressed.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-n">29</span><div class="stat-l">responses</div></div>
+    <div class="stat"><span class="stat-n">27</span><div class="stat-l">images shared</div></div>
+    <div class="stat"><span class="stat-n">1</span><div class="stat-l">question asked</div></div>
+  </div>
+
+  <div class="section-head"><span class="section-title">Recurring themes</span><div class="section-line"></div></div>
+  <div class="themes">
+    <span class="theme">Care and protection</span>
+    <span class="theme">Home </span>
+    <span class="theme">Presence </span>
+    <span class="theme">Animals</span>
+    <span class="theme">Safe space</span>
+    <span class="theme">Silence and touch</span>
+    <span class="theme">Peace</span>
+    <span class="theme">Togetherness</span>
+    <span class="theme">Unconditional giving</span>
+    <span class="theme">Vulnerability</span>
+  </div>
+
+  <div class="section-head"><span class="section-title">The responses</span><div class="section-line"></div></div>
+  <div class="masonry" id="grid"></div>
+
+  <div class="section-head"><span class="section-title">My reflection</span><div class="section-line"></div></div>
+  <div class="reflection">
+    <div class="reflection-body">
+      <p>What moves me most, looking at all of this together, is how many different shapes love takes and yet how each one circles back to the same quiet truth: love is presence. Whether it lives in a dog's eyes, a childhood village, a friend across borders, or a hand held through difficulty, love seems to be the act of making someone feel that they are not alone in the world.</p>
+      <p>The commitment people brought to their responses also moved me. Nobody gave a throwaway answer. Everyone paused. Everyone chose carefully. That care and that act of slowing down to think about love, felt to me like love itself.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <button class="lb-close" id="lb-close" aria-label="Close">&#x2715;</button>
+  <button class="lb-arrow lb-prev" id="lb-prev" aria-label="Previous">&#x2039;</button>
+  <div class="lb-img-wrap"><img id="lb-img" src="" alt=""></div>
+  <div class="lb-caption">
+    <p id="lb-text"></p>
+    <span class="lb-num" id="lb-num"></span>
+  </div>
+  <button class="lb-arrow lb-next" id="lb-next" aria-label="Next">&#x203a;</button>
+</div>
+
+<script>
+var entries = [
+  {q:"When you look at the other person's eyes and see that your soul, your life, is within them — no matter the fights, you can rely on them.",id:"1jvIPihlg4imUdhx20PVE3xN13KKKwhLQ"},
+  {q:"The love of my dog.",id:"13blaugp-0mTCGdf6lctJVnDMcKdp9c73"},
+  {q:"The people (or the animals) who are important to you.",id:"1bE8_wIUNALqVCP3m1J8mOsb7cj5SXA9-"},
+  {q:"In short, love for me is care.",id:"182djPUWqCrkJ2Q-qbRDKHFVbcGq4PI-1"},
+  {q:"Love is giving someone a place to rest their soul.",id:"1dzFY9it2DhUF9S0iiko9bL8DEFuQnS74"},
+  {q:null,id:"1hw2DZ9nG29AgMoKg0Yfth4NvWK__RlnN"},
+  {q:"Be there when no one else wants to be there.",id:"1BxuhbFtY9bOK1I3OiWBa_KcMrt6xiDRR"},
+  {q:"Sometimes it's just a moment of tenderness and wonder.",id:"1pRIPhbn2PVLXFENhw7_6J5y_BTyuimQL"},
+  {q:"Opening your heart to people, things and places that fill your soul — and ultimately that is what it's all about.",id:"1PdGZIgkCvALyRvDzTefwXx3Xzc7dmdzK"},
+  {q:"Love is the comfort of knowing you have a safe space to be your authentic self, without judgment. True friendship knows no boundaries.",id:"1Xa2DGwwKiQy-TISwlnZOhU989Sr-nxS2"},
+  {q:"It is all about my hometown. It has always been my source of love, inspiration, and calm.",id:"1KqRYKm2bk05zIqp587kcoGM5w_yft7_s"},
+  {q:"My dog Thor.",id:"114hUOG2phhROQ8VdL-5e9PwFIPjzjZcP"},
+  {q:"Love is like constantly feeling you're in a rocket going to the moon and back — there are hard moments, but the outward journey is so beautiful the return is always worth it.",id:"104F386UjX4Oq_L3mriy0JJoQbID6jHoJ"},
+  {q:"Being convinced of my choice.",id:"1H0wile1HqmZ13naxHHvpkIySeJE5LohT"},
+  {q:"Being there for each other through thick and thin. It doesn't matter what you go through, as long as you face it together.",id:"1sb81Kp7_b_0Qw_ZW0onzKRO20jfnaBGm"},
+  {q:"Peace.",id:"1meMPT5nZrp7z1Qufj8HsD8m9LJmoZhBA"},
+  {q:"Love is protecting the other, even at the cost of removing one's own defenses.",id:"1KB3ynRdGgnJy_cA_GmJNv0Fjzhb8AxrY"},
+  {q:"Sharing, mutual respect, trust, and always being there — welcoming, never judging.",id:"1xLFiSIciMSC2ppfAlNxsuCzl-sJkkVrU"},
+  {q:"Caring for the other: sensing when they are happy, sad, angry — being by their side in difficult times, without ever being suffocating.",id:"12kPLZ7KLea7omQV3ZcvS-jE6PCBhksTR"},
+  {q:"Showing up for someone. Choosing each other every single day, even when things get tough. Unconditional love is the rarest gift: giving without expecting anything in return.",id:"1Xm7rjUtMd-384OBJzo8i62E8oQOHpSp0"},
+  {q:"Accepting the other person and giving them your whole heart. Being willing to meet halfway and grow together.",id:"1QUKuPUtT5_XAwhhXtBtANOa0RB3gl8v9"},
+  {q:"The comfort of silence and the warmth of a simple touch.",id:"1k2JR2FJqhk-fvQt5S5P68oieLM5QHTuy"},
+  {q:"Love is an ever-fixed mark that never shakes — a constant light in the dark.",id:"1uxbL-1B5SfiDQ5l-JV5H9D3vMgsyntr-"},
+  {q:null,id:"1MHudXqdTH0GjHm9AWxXECUFeGCZGHdxy"},
+  {q:null,id:"1vfPAv8sH1rEjAXCokGxnrWKpNPHu6WKA"},
+  {q:"Love doesn't ask about color, race, or where you come from. Kindness, joy, and human connection speak louder than differences.",id:"1wmlJMith4Eb2y2GTBRXLu_kAyAGypRNx"},
+  {q:"Love is like the fire of Mount Etna: born deep within, in silence, then erupting with unstoppable force. When it is real, it continues to burn even beneath the ashes of time.",id:"1zZrmhxJNOhy4xS6vg8juUrMNHXOr2LcD"},
+  {q:"Surrounding yourself with people who make you happy, creating your own family and a home away from home.",id:"1-BQAA-KWmbi7qlG_wG95dhNn_C7O0hP0"},
+  {q:"Love is what gives you peace inside.",id:"1iJ3KcqSVP_8Lhbo1cxydWA88CKDhKbZC"}
+];
+
+var current = 0;
+var lb      = document.getElementById('lb');
+var lbImg   = document.getElementById('lb-img');
+var lbText  = document.getElementById('lb-text');
+var lbNum   = document.getElementById('lb-num');
+var grid    = document.getElementById('grid');
+
+entries.forEach(function(e, i) {
+  var card = document.createElement('div');
+  card.className = 'card';
+
+  var btn = document.createElement('button');
+  btn.className = 'card-img-btn';
+  btn.setAttribute('aria-label', 'View photo ' + (i + 1));
+  var img = document.createElement('img');
+  img.src = 'https://drive.google.com/thumbnail?id=' + e.id + '&sz=w400';
+  img.alt = 'Response ' + (i + 1);
+  btn.appendChild(img);
+  btn.addEventListener('click', function() { openLb(i); });
+
+  var body = document.createElement('div');
+  body.className = 'card-body';
+  body.innerHTML = (e.q
+    ? '<p class="card-quote">\u201c' + e.q + '\u201d</p>'
+    : '<p class="card-quote card-noquote">Image only \u2014 no caption</p>')
+    + '<p class="card-num">' + String(i + 1).padStart(2, '0') + ' / ' + entries.length + '</p>';
+
+  card.appendChild(btn);
+  card.appendChild(body);
+  grid.appendChild(card);
+});
+
+function openLb(i) {
+  current = i;
+  renderLb();
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLb() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderLb() {
+  var e = entries[current];
+  lbImg.src = 'https://drive.google.com/thumbnail?id=' + e.id + '&sz=w1200';
+  lbImg.alt = 'Response ' + (current + 1);
+  lbText.textContent = e.q ? '\u201c' + e.q + '\u201d' : '';
+  lbNum.textContent = String(current + 1).padStart(2, '0') + ' / ' + entries.length;
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLb);
+
+document.getElementById('lb-prev').addEventListener('click', function() {
+  current = (current - 1 + entries.length) % entries.length;
+  renderLb();
+});
+
+document.getElementById('lb-next').addEventListener('click', function() {
+  current = (current + 1) % entries.length;
+  renderLb();
+});
+
+lb.addEventListener('click', function(ev) {
+  if (ev.target === lb) { closeLb(); }
+});
+
+document.addEventListener('keydown', function(ev) {
+  if (!lb.classList.contains('open')) { return; }
+  if (ev.key === 'Escape') { closeLb(); }
+  if (ev.key === 'ArrowLeft') { current = (current - 1 + entries.length) % entries.length; renderLb(); }
+  if (ev.key === 'ArrowRight') { current = (current + 1) % entries.length; renderLb(); }
+});
+</script>
+</body>
+</html>
